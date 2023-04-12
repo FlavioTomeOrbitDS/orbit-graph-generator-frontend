@@ -1,3 +1,5 @@
+![ORBIT FUNDO BRACO 1_1](https://user-images.githubusercontent.com/115179333/231576187-282b29d7-d872-4dfc-aaff-3f9184700ac8.jpg)
+
 ## Orbit Gaph Data Generator - Frontend
 
 ## Descrição do Projeto:
