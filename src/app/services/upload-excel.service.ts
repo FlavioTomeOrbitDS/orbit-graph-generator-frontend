@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UploadExcelService {
-  //private url = 'http://127.0.0.1:8080';
+  private url = 'http://127.0.0.1:8080';
   //private url = 'https://api-test-2n5o6txceq-rj.a.run.app/'
-  private url = 'https://orbit-graph-generator-backend-2n5o6txceq-rj.a.run.app';
+  //private url = 'https://orbit-graph-generator-backend-2n5o6txceq-rj.a.run.app';
   constructor(private httpClient: HttpClient) {}
 
   // public sendToBackend(data: any): void {
