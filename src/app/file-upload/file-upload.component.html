@@ -42,7 +42,7 @@
       class="form-control"
       id="fileNameTxt"
       name = 'fileNameTxt'
-      placeholder="Faça o upload do aruivo .xlsx formatado conforme o modelo"
+      placeholder="Faça o upload do arquivo .csv formatado conforme o modelo"
       [(ngModel)]="fileName"
       disabled
     />
@@ -62,7 +62,7 @@
     id="upload_input"
     (change)="onFileChange($event)"
     style="display: none"
-    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    accept=".csv"
   />
   <p></p>
   <ng-template [ngIf]="getFilesUploaded()">

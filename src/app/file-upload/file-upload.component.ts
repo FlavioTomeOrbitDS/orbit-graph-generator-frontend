@@ -10,11 +10,16 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./file-upload.component.scss'],
 })
 export class FileUploadComponent implements OnInit {
-  constructor(private uploadExcelService: UploadExcelService, private loginService :LoginService) {}
+  constructor(
+    private uploadExcelService: UploadExcelService,
+    private loginService: LoginService
+  ) {}
 
   ngOnInit(): void {}
 
   fileName: any;
+
+  file: any;
 
   private filesUploaded: boolean = false;
 
@@ -45,14 +50,14 @@ export class FileUploadComponent implements OnInit {
     this._error = value;
   }
 
-  private finishedOperation : boolean = false;
+  private finishedOperation: boolean = false;
 
-  getFinishedOperation(){
-    return this.finishedOperation
+  getFinishedOperation() {
+    return this.finishedOperation;
   }
 
-  setFinishedOperation(value : boolean){
-    this.finishedOperation = value
+  setFinishedOperation(value: boolean) {
+    this.finishedOperation = value;
   }
 
   private jsonData: any;
@@ -77,47 +82,50 @@ export class FileUploadComponent implements OnInit {
   //   };
   // }
 
-  onFileChange(ev: any) {
-    this.setFilesUploaded(false);
-    this.setFileLoading(true);
-    this.error = false;
-    const target: DataTransfer = <DataTransfer>ev.target;
-    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+  // onFileChange(ev: any) {
+  //   this.setFilesUploaded(false);
+  //   this.setFileLoading(true);
+  //   this.error = false;
+  //   const target: DataTransfer = <DataTransfer>ev.target;
+  //   if (target.files.length !== 1) throw new Error('Cannot use multiple files');
 
-    let file = target.files[0];
-    this.fileName = file.name;
+  //   let file = target.files[0];
+  //   this.fileName = file.name;
 
-    const reader: FileReader = new FileReader();
-    reader.onload = (e: any) => {
-      /* read workbook */
-      const bstr: string = e.target.result;
-      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+  //   const reader: FileReader = new FileReader();
+  //   reader.onload = (e: any) => {
+  //     /* read workbook */
+  //     const bstr: string = e.target.result;
+  //     const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
 
-      /* grab first sheet */
-      const wsname: string = wb.SheetNames[0];
-      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+  //     /* grab first sheet */
+  //     const wsname: string = wb.SheetNames[0];
+  //     const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-      /* save data */
-      this.jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      this.setFilesUploaded(true);
-      this.setFileLoading(false);
+  //     /* save data */
+  //     this.jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  //     this.setFilesUploaded(true);
+  //     this.setFileLoading(false);
 
-      //this.uploadExcelService.sendToBackend(json_data);
-      // json_data.map((item) => {
-      //   let item_str = String(item);
-      //   if (item_str != '') this.mainService.addOriginal_urls_list(item_str);
-      // });
-    };
-    reader.readAsBinaryString(target.files[0]);
-  }
+  //     //this.uploadExcelService.sendToBackend(json_data);
+  //     // json_data.map((item) => {
+  //     //   let item_str = String(item);
+  //     //   if (item_str != '') this.mainService.addOriginal_urls_list(item_str);
+  //     // });
+  //   };
+  //   reader.readAsBinaryString(target.files[0]);
+  // }
 
   public sendToBackend() {
-    console.log('Data sent :', this.jsonData);
+    //console.log('Data sent :', this.jsonData);
+    const formData: FormData = new FormData();
+    formData.append('file', this.file, this.file.name);
+
     this.setFilesUploaded(false);
     this.setFileLoading(true);
-    this.setFinishedOperation(false)
+    this.setFinishedOperation(false);
     this.error = false;
-    this.uploadExcelService.sendToBackend(this.jsonData).subscribe(
+    this.uploadExcelService.uploadToBackend(formData).subscribe(
       (response) => {
         console.log('Data received :', response);
         this.uploadExcelService.downloadExcelFile(response, 'response.xlsx');
@@ -134,11 +142,35 @@ export class FileUploadComponent implements OnInit {
     );
   }
 
-  public teste(){
-    this.uploadExcelService.test().subscribe( (r) => console.log(r)  )
+  public teste() {
+    this.uploadExcelService.test().subscribe((r) => console.log(r));
   }
 
-  logout(){
-    this.loginService.logout()
+  logout() {
+    this.loginService.logout();
+  }
+
+  onFileChange(event: any) {
+    //const file: File = event.target.files[0];
+    this.file = event.target.files[0];
+    this.setFilesUploaded(false);
+    this.setFileLoading(true);
+    this.error = false;
+
+    const reader = new FileReader();
+    reader.readAsText(this.file);
+    reader.onload = () => {
+      this.setFilesUploaded(true);
+      this.setFileLoading(false);
+    };
+
+
+    //const formData: FormData = new FormData();
+    //formData.append('file', file, file.name);
+
+    // this.uploadExcelService.uploadToBackend(formData).subscribe((response)=> {
+    //   console.log('Data received :', response);
+    //   this.uploadExcelService.downloadExcelFile(response, 'response.xlsx');
+    // })
   }
 }

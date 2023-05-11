@@ -56,4 +56,12 @@ export class UploadExcelService {
     link.click();
     URL.revokeObjectURL(url);
   }
+
+  uploadToBackend(formData: FormData): Observable<any> {
+    const httpOptions = {
+      responseType: 'blob' as 'json',
+    };
+
+     return this.httpClient.post(this.url + '/api/generateGraphData', formData, httpOptions);
+  }
 }
