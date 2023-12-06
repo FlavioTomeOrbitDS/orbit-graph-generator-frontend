@@ -24,7 +24,7 @@
 <p></p>
 
 <div class="container" style="text-align: center">
-  <h1>Orbit Graph Generator</h1>
+  <h1>Orbit Score Generator</h1>
 </div>
 
 <div
@@ -35,14 +35,15 @@
     text-align: center;
   "
 >
+<ng-template [ngIf]="!showTable">
   <div class="form-group container" style="text-align: left">
     <label for="disabledTextInput">File Name</label>
     <input
       type="text"
       class="form-control"
       id="fileNameTxt"
-      name = 'fileNameTxt'
-      placeholder="Faça o upload do arquivo .csv formatado conforme o modelo"
+      name="fileNameTxt"
+      placeholder="Faça o upload do arquivo .xlsx formatado conforme o modelo"
       [(ngModel)]="fileName"
       disabled
     />
@@ -62,7 +63,7 @@
     id="upload_input"
     (change)="onFileChange($event)"
     style="display: none"
-    accept=".csv"
+    accept=".xlsx"
   />
   <p></p>
   <ng-template [ngIf]="getFilesUploaded()">
@@ -76,7 +77,53 @@
       <span class="sr-only"></span>
     </div>
   </ng-template>
+ </ng-template>
 
+  <ng-template [ngIf]="showTable">
+  <table class="table  table-striped">
+    <thead>
+      <tr>
+        <th>Organic Impressions</th>
+        <th>Paid Impressions</th>
+        <th>Organic Reach</th>
+        <th>Paid Reach</th>
+        <th>TOP2 Social Media</th>
+        <th>Interacions per Follwers</th>
+        <th>Interacions per Impressions</th>
+        <th>Comments Health</th>
+        <th>Content Retention Rate</th>
+        <th>Social NPS</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of json">
+        <td>{{ i["Organic Impressions"] }}</td>
+        <td>{{ i["Paid Impressions"] }}</td>
+        <td>{{ i["Organic reach"] }}</td>
+        <td>{{ i["Paid Reach"] }}</td>
+        <td>{{ i["TOP2 Social Media"] }}</td>
+        <td>{{ i["Interacions per Follwers"] }}</td>
+        <td>{{ i["Interacions per Impressions"] }}</td>
+        <td>{{ i["Content Retention rate"] }}</td>
+        <td>{{ i["Content Retention rate"] }}</td>
+        <td>{{ i["Social NPS"] }}</td>
+        <td>{{ i["Total"] }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+<br>
+
+  <div class="container" style="width: 100%;">
+    <button type="button" class="btn btn-primary" (click)="voltarAoInicio()" style="float: left;">
+        Voltar ao início
+    </button>
+    <button type="button" class="btn btn-primary"  style="float: right;">         
+      Download
+    </button>
+  </div>
+</ng-template>
   <!-- Button trigger modal -->
 
   <button

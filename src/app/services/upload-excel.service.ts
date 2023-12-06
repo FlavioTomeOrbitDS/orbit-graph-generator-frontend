@@ -1,27 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import * as XLSX from 'xlsx';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class UploadExcelService {
-  private url = 'http://127.0.0.1:8080';
-  //private url = 'https://api-test-2n5o6txceq-rj.a.run.app/'
-  //private url = 'https://orbit-graph-generator-backend-2n5o6txceq-rj.a.run.app';
+  //private url = 'http://127.0.0.1:8080';
+  private url = 'https://orbit-score-backend-xgmsewclfa-uc.a.run.app/';
+  
   constructor(private httpClient: HttpClient) {}
 
-  // public sendToBackend(data: any): void {
-  //   this.httpClient
-  //     .post<any>(this.url, data, {
-  //       responseType: 'blob' as 'json',
-  //     })
-  //     .subscribe((response) => {
-  //       this.downloadExcelFile(response, 'response.xlsx');
-  //       console.log(response);
-  //     });
-  //}
-
+  
   sendToBackend(data: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -35,16 +27,13 @@ export class UploadExcelService {
     };
 
     return this.httpClient.post<any>(
-      this.url + '/api/download',
+      this.url + '/api/gettoal',
       data,
       httpOptions
     );
   }
 
-  test(): Observable<any> {
-    return this.httpClient.get<any>(this.url + '/iniciaupload');
-  }
-
+  
   downloadExcelFile(data: any, filename: string) {
     const blob = new Blob([data], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -55,13 +44,20 @@ export class UploadExcelService {
     link.download = filename;
     link.click();
     URL.revokeObjectURL(url);
+    // const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    // XLSX.writeFile(wb, 'output.xlsx');
   }
 
-  uploadToBackend(formData: FormData): Observable<any> {
+  uploadToBackend(formData: any): Observable<any> {
     const httpOptions = {
-      responseType: 'blob' as 'json',
+      
     };
+     
 
-     return this.httpClient.post(this.url + '/api/generateGraphData', formData, httpOptions);
+    // let data = JSON.stringify(formData)
+     //console.log(data)
+    return this.httpClient.post(this.url + '/api/gettotal', formData, httpOptions);
   }
 }
