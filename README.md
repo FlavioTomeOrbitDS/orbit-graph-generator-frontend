@@ -23,6 +23,10 @@ O site gerado pelo projeto possui 2 páginas:
   1. A página de login, na qual o login é feito por meio de um usuário previamente cadastrado.
   2. A página principal, que possui um text input e um botão para que o usuário realize o upload de um arquivo no formato .xlsx. O arquivo deve conter uma tabela de menções de palavras chave em um determinado contexto. Assim que o usuário fizer o upload do arquivo, um botão para iniciar o processo de exportação dos dados é mostrado.
   
+Link do projeto do Firebase:
+```
+https://console.firebase.google.com/project/orbit-tweets-search-v2/hosting/sites/orbit-tweets-search-v2?hl=pt-br
+```
 
 ## Páginas da Aplicação
 ---
